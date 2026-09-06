@@ -50,8 +50,7 @@ class DenseLayer:
         d_out : gradient of loss w.r.t. this layer's output, shape (batch, output_size)
         Returns gradient of loss w.r.t. this layer's input, shape (batch, input_size)
         """
-        batch = self._x.shape[0]
         d_z = d_out * self.activation_grad(self._z)    # element-wise
-        self.dW = self._x.T @ d_z / batch
-        self.db = np.mean(d_z, axis=0, keepdims=True)
+        self.dW = self._x.T @ d_z
+        self.db = d_z.sum(axis=0, keepdims=True)
         return d_z @ self.W.T
